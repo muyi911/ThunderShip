@@ -1,8 +1,45 @@
 # 霆舟 ThunderShip
 
+<p align="center">
+  <img src="build/appicon.png" alt="ThunderShip 图标" width="112" height="112">
+</p>
+
 基于 **Go + Wails 3 + Vue 3** 的 Windows 桌面运维与部署工具。通过 SSH 连接 Linux 服务器，集中管理终端、远程文件和部署工作流。
 
 在本机构建好程序或静态资源后，将文件与远程命令组成可视化工作流，即可完成上传、重启与检查。目标服务器无需安装专用常驻 Agent。
+
+## 下载
+
+[下载最新稳定版](https://github.com/muyi911/ThunderShip/releases/latest) · [Windows x64 v0.2.0 ZIP](https://github.com/muyi911/ThunderShip/releases/download/v0.2.0/ThunderShip-v0.2.0-windows-amd64.zip)
+
+解压后运行 `ThunderShip.exe`，无需安装。运行前请确保已安装 WebView2 Runtime；Release 附带 SHA-256 校验文件。本版程序未进行代码签名，Windows 可能显示未知发布者提示。
+
+## 平台支持
+
+| 平台 | 当前状态 | 说明 |
+| --- | --- | --- |
+| Windows x64 | **支持，提供稳定版构建物** | 已验证构建、桌面启动和基本窗口操作；需要 WebView2 Runtime |
+| macOS Apple Silicon / Intel | **当前不支持，不提供构建物** | 尚未接入 macOS 钥匙串；非 Windows 凭据保存/读取会报错，文件剪贴板也未实现；没有 Mac 打包、签名、公证或真机验证 |
+| Linux 桌面 | 当前不支持 | 暂无完整桌面适配及发布包 |
+| Linux 受管服务器 | 支持 | 通过 SSH 连接，与桌面运行平台是两回事 |
+
+**Mac 用户目前不能直接使用本 Release。** 移植需要补齐平台凭据、文件剪贴板、构建打包及真机验证，并非仅重新编译即可宣称支持。
+
+## 界面预览
+
+以下为真实桌面窗口截图，使用独立演示数据。服务器地址和文件路径均为示例，不包含个人配置；截图中的流程未向服务器执行。
+
+### 工作流列表
+
+![工作流列表](docs/images/workflows.png)
+
+### 可视化流程编辑
+
+![可视化流程编辑](docs/images/workflow-editor.png)
+
+### 服务器管理
+
+![服务器管理](docs/images/servers.png)
 
 ## 功能
 
@@ -38,7 +75,7 @@ AI 生成内容需要人工确认；命令建议不会自动执行。未配置 A
 | 本地存储 | JSON、JSONL、Windows 凭据管理器 | 配置、运行记录与密码/API Key |
 | 构建与检查 | PowerShell、JavaScript、Go test | Windows 构建、前端回归脚本与后端测试 |
 
-当前构建脚本面向 **Windows x64**，受管服务器以 **Linux** 为主。Windows 运行端需要 WebView2 Runtime；其他桌面平台尚未验证。
+当前构建脚本面向 **Windows x64**，受管服务器以 **Linux** 为主。Windows 运行端需要 WebView2 Runtime；macOS 与 Linux 桌面当前不支持，详见上方平台支持表。
 
 ## 架构
 
@@ -79,6 +116,7 @@ ThunderShip/
 │  ├─ appicon.png         # 应用图标源文件
 │  ├─ config.yml          # Wails 开发配置
 │  └─ windows/            # Windows 图标、版本信息、manifest
+├─ docs/images/           # 经审核的公开演示截图
 ├─ scripts/               # 可复用构建辅助与回归检查脚本
 ├─ dist/                  # 生成的 ThunderShip.exe，不提交
 ├─ local/                 # 本机工作资料，不提交
@@ -92,7 +130,7 @@ ThunderShip/
 └─ Taskfile.yml           # Wails 任务入口
 ```
 
-**目录约定：**`build/` 只维护打包输入；可执行程序输出到根目录 `dist/`；测试或人工检查生成的文件放入 `local/` 对应子目录。`scripts/` 保留可重复使用的检查程序，单次调查脚本放到 `local/`。
+**目录约定：**`build/` 只维护打包输入；可执行程序输出到根目录 `dist/`；测试或人工检查生成的文件放入 `local/` 对应子目录。只有经人工审核、不包含真实环境信息的公开演示截图放入 `docs/images/`。`scripts/` 保留可重复使用的检查程序，单次调查脚本放到 `local/`。
 
 `.gitignore` 排除构建结果、依赖、运行数据、日志、备份、私钥、环境变量文件、AI 工具配置和开发计划。AI 功能本身的实现代码及测试属于项目源码，正常提交。
 
@@ -101,7 +139,7 @@ ThunderShip/
 ### 准备环境
 
 - Windows x64 与 WebView2 Runtime。
-- Go 1.26 系列 SDK。`build.ps1` 会从 `%USERPROFILE%\sdk\go1.26.*` 中选择最高版本，与 GoLand 的 SDK 布局一致；安装 CLI 或手动执行 Go 命令前，请将对应 SDK 的 `bin` 加入当前终端 `PATH`。
+- Go 1.26 系列 SDK，建议使用 1.26.10 或更新补丁版本。`build.ps1` 会从 `%USERPROFILE%\sdk\go1.26.*` 中选择最高版本，与 GoLand 的 SDK 布局一致；安装 CLI 或手动执行 Go 命令前，请将对应 SDK 的 `bin` 加入当前终端 `PATH`。
 - Node.js 22.12+ 与 npm。
 - 固定版本的 Wails CLI：
 
