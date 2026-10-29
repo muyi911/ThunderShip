@@ -1,0 +1,15 @@
+{
+	"fixed": {
+		"file_version": "0.2.0"
+	},
+	"info": {
+		"0000": {
+			"ProductVersion": "0.2.0",
+			"CompanyName": "ThunderShip",
+			"FileDescription": "霆舟 ThunderShip",
+			"LegalCopyright": "",
+			"ProductName": "霆舟 ThunderShip",
+			"Comments": ""
+		}
+	}
+}

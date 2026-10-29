@@ -1,0 +1,27 @@
+version: '3'
+info:
+  companyName: ThunderShip
+  productName: 霆舟 ThunderShip
+  productIdentifier: com.thundership.app
+  version: 0.2.0
+dev_mode:
+  root_path: .
+  log_level: warn
+  debounce: 1000
+  ignore:
+    dir: [.git, node_modules, frontend, build, dist, local]
+    file: ['*_test.go']
+    watched_extension: ['*.go']
+    git_ignore: true
+  executes:
+    - cmd: powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./build.ps1 -CompileDev
+      type: blocking
+    - cmd: npm.cmd --prefix frontend run dev
+      type: background
+      readiness:
+        http: http://127.0.0.1:34115/
+        timeout: 60s
+        interval: 200ms
+    - cmd: dist\ThunderShip.exe
+      type: primary
+      exit_policy: shutdown

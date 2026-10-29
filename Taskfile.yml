@@ -1,0 +1,11 @@
+version: '3'
+tasks:
+  build:
+    cmds:
+      - powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./build.ps1 {{if eq .DEV "true"}}-CompileDev{{end}}
+  dev:
+    cmds:
+      - powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./build.ps1 -Dev
+  run:
+    cmds:
+      - powershell.exe -NoProfile -Command ./dist/ThunderShip.exe
